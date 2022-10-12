@@ -1,19 +1,8 @@
 import torch
 import cv2
 import numpy as np
-import sys, os
 from utils.general import non_max_suppression
 from utils.downloads import attempt_download
-
-# import argparse
-
-# parser = argparse.ArgumentParser()
-# parser.add_argument('--weights', type=str, default='weights/yolov5s.pt', help='model.pt path')
-# parser.add_argument('--image', type=str, default='inference/images/test.jpg', help='Input image') 
-# parser.add_argument('--output_dir', type=str, default='inference/output/', help='output directory')
-# parser.add_argument('--thres', type=float, default=0.4, help='object confidence threshold')
-# opt = parser.parse_args()
-
 
 ''' 
 Class Labels 
@@ -41,11 +30,11 @@ for i, name in enumerate(classnames):
 weights = './weights/yolov5n.pt'
 attempt_download(weights)
 
-# try:
-model = torch.load(weights)['model'].float()
-model.eval()
-# except:
-#     print('[ERROR] check the model')
+try:
+    model = torch.load(weights)['model'].float()
+    model.eval()
+except:
+    print('[ERROR] check the model')
 
 
 def image_loader(img,imsize):
@@ -88,38 +77,6 @@ def get_pred(img):
 
     return pred
                 
-
-# path = '../test.jpg'
-
-# image = cv2.imread(path)
-
-# if image is not None:
-#     prediction = get_pred(image)
-
-#     if prediction is not None:
-#         for pred in prediction:
-
-#             x1 = int(pred[0])
-#             y1 = int(pred[1])
-#             x2 = int(pred[2])
-#             y2 = int(pred[3])
-
-#             start = (x1,y1)
-#             end = (x2,y2)
-
-#             pred_data = f'{label[pred[-1]]} {str(pred[-2]*100)[:5]}%'
-#             print(pred_data)
-#             color = (0,255,0)
-#             image = cv2.rectangle(image, start, end, color)
-#             image = cv2.putText(image, pred_data, (x1,y1+25), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2, cv2.LINE_AA) 
-#         cv2.imwrite('result.jpg', image)
-
-# else:
-#     print('[ERROR] check input image')
-    
-
-import cv2
-
 cam = cv2.VideoCapture(0)
 
 while True:
@@ -151,6 +108,3 @@ while True:
 
 cam.release()
 cv2.destroyAllWindows()
-
-
-
